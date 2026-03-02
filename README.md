@@ -51,6 +51,19 @@ entrypoint.sh     DB initialisation + server start
 docker-compose.yml
 ```
 
+## Apple Silicon (M-series Macs)
+
+The image is pinned to `linux/amd64` because Ruby 1.8.7's `configure` script does not recognise ARM64. Docker Desktop on Apple Silicon runs the x86_64 image via Rosetta 2 with no extra steps on your end.
+
+Before building, confirm this setting is enabled in Docker Desktop:
+**Settings → General → "Use Rosetta for x86_64/amd64 emulation on Apple Silicon"**
+
+Then build and run as normal:
+
+```bash
+docker-compose up --build
+```
+
 ## Building Without Compose
 
 ```bash

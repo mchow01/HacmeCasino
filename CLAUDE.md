@@ -43,6 +43,7 @@ Rails 1.2.6 · Ruby 1.8.7-p374 · SQLite 3 · WEBrick · no Bundler (pre-Bundler
 ## Dockerfile Notes
 
 - **Ubuntu 16.04** base — ships OpenSSL 1.0.2, which Ruby 1.8.7's `ext/openssl` requires. Later Ubuntu versions break the compile.
+- **Pinned to `linux/amd64`** — `FROM --platform=linux/amd64` in the Dockerfile and `platform: linux/amd64` in `docker-compose.yml`. Ruby 1.8.7's `config.guess` does not recognise ARM64/aarch64, so the build fails on Apple Silicon (M-series) without this pin. Docker Desktop on Apple Silicon runs the x86_64 image transparently via Rosetta 2. Ensure "Use Rosetta for x86_64/amd64 emulation on Apple Silicon" is enabled in Docker Desktop → Settings → General.
 - **Gems downloaded via system `wget`** — RubyGems 1.8.x cannot negotiate TLS 1.2 with rubygems.org; system wget can. All gems are installed from local `.gem` files.
 - **Gem versions are pinned:** rake-0.7.3, activesupport-1.4.4, activerecord-1.15.6, actionpack-1.13.6, actionmailer-1.3.6, actionwebservice-1.2.6, builder-2.1.2, cgi_multipart_eof_fix-2.5.0, tmail-1.2.7.1, sqlite3-ruby-1.2.4. Do not upgrade rake past 0.8.x — the Rakefile syntax is incompatible with rake 0.9+.
 - **`adapter: sqlite` → `adapter: sqlite3`** — patched via `sed` in the Dockerfile. Rails 1.2.6 uses the `dbfile:` key for both adapters; only the adapter name needed changing.
