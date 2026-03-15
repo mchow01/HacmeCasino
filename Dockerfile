@@ -63,8 +63,7 @@ COPY app/ /app/
 
 # Switch from legacy SQLite 2 adapter name to SQLite 3
 # Rails 1.2.6 uses `dbfile:` key for both adapters — only the adapter name changes
-RUN sed -i 's/adapter: sqlite$/adapter: sqlite3/' config/database.yml \
-    && rm -f db/hacmecasino_development.db db/hacmecasino_test.db
+RUN sed -i 's/adapter: sqlite$/adapter: sqlite3/' config/database.yml
 
 # Ensure writable runtime directories exist
 RUN mkdir -p log tmp/sessions tmp/cache

@@ -9,9 +9,15 @@ docker-compose up --build   # build + start
 docker-compose up           # start (after first build)
 ```
 
-Access at http://localhost:3000. Register a user through the UI — no seeded accounts exist.
+Access at http://localhost:3000. Three accounts are pre-seeded in `app/db/hacmecasino_development.db`:
 
-The entrypoint runs `rake db:schema:load` on first boot (when `db/hacmecasino_development.db` is absent), then starts WEBrick on 0.0.0.0:3000.
+| login | password | chips |
+|-------|----------|-------|
+| `andy_aces` | `Password1` | 100,000 |
+| `bobby_blackjack` | `Password1` | 10,000 |
+| `crystal_cardshark` | `Password1` | 10,000 |
+
+The entrypoint runs `rake db:schema:load` on first boot only if `db/hacmecasino_development.db` is absent (it won't be — the pre-seeded file is baked into the image). WEBrick starts on 0.0.0.0:3000.
 
 ## Repository Layout
 
@@ -47,6 +53,7 @@ Rails 1.2.6 · Ruby 1.8.7-p374 · SQLite 3 · WEBrick · no Bundler (pre-Bundler
 - **Gems downloaded via system `wget`** — RubyGems 1.8.x cannot negotiate TLS 1.2 with rubygems.org; system wget can. All gems are installed from local `.gem` files.
 - **Gem versions are pinned:** rake-0.7.3, activesupport-1.4.4, activerecord-1.15.6, actionpack-1.13.6, actionmailer-1.3.6, actionwebservice-1.2.6, builder-2.1.2, cgi_multipart_eof_fix-2.5.0, tmail-1.2.7.1, sqlite3-ruby-1.2.4. Do not upgrade rake past 0.8.x — the Rakefile syntax is incompatible with rake 0.9+.
 - **`adapter: sqlite` → `adapter: sqlite3`** — patched via `sed` in the Dockerfile. Rails 1.2.6 uses the `dbfile:` key for both adapters; only the adapter name needed changing.
+- **Pre-seeded database** — `app/db/hacmecasino_development.db` is a SQLite3 file baked into the image. The Dockerfile no longer deletes it. To reset or repopulate it, edit it directly with `sqlite3 app/db/hacmecasino_development.db` and rebuild.
 - To add a gem: `wget https://rubygems.org/downloads/<name>-<ver>.gem` and add a `gem install` line in dependency order.
 
 ## Intentional Vulnerabilities

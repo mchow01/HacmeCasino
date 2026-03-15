@@ -12,7 +12,13 @@ docker-compose up --build
 
 Open http://localhost:3000, register an account, and start exploring.
 
-On first run the container creates a fresh SQLite3 database. There are no pre-seeded users — register through the UI.
+The image ships a pre-seeded SQLite3 database. Three accounts are available on first boot:
+
+| login | password | chips |
+|-------|----------|-------|
+| `andy_aces` | `Password1` | 100,000 |
+| `bobby_blackjack` | `Password1` | 10,000 |
+| `crystal_cardshark` | `Password1` | 10,000 |
 
 ## Stack
 
